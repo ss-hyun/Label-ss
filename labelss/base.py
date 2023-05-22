@@ -3,7 +3,7 @@ import warnings
 from pathlib import Path
 from .label import XML, JSON, LabelError
 from .labelme import LabelMe
-from .yolov8 import Yolov8Label
+from .yolov8 import CarYolov8Label
 from .utils import pixel2ratio, xyxy2xywh
 
 
@@ -85,7 +85,7 @@ class MyLabel(XML):
             for box in img_label.label['box']:
                 label.append(
                     [   
-                        str(Yolov8Label.cls[box['@label']])
+                        str(CarYolov8Label.cls[box['@label']])
                         , *pixel2ratio(
                             *xyxy2xywh(
                                 box['@xtl'], box['@ytl'], box['@xbr'], box['@ybr']
@@ -96,10 +96,10 @@ class MyLabel(XML):
                     ]
                 )
             
-            img_path_info.append(img_label.data_path.as_posix())
-            label_path_info.append(img_label.label_path.as_posix().replace('images', 'labels').replace('.json', '.txt'))
+            img_path_info.append('./'+(Path('.')/img_label.data_path.parent.name/img_label.data_path.name).as_posix())
+            label_path_info.append('./'+(Path('.')/img_label.label_path.parent.name/img_label.label_path.name).as_posix().replace('images', 'labels').replace('.json', '.txt'))
             
-            Yolov8Label(label_path=Path(label_path_info[-1])
+            CarYolov8Label(label_path=Path(img_label.label_path.as_posix().replace('images', 'labels').replace('.json', '.txt'))
                     , data_path=img_label.data_path
                     , label=label).save() 
         
