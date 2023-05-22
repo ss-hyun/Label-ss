@@ -77,8 +77,6 @@ class MyLabel(XML):
                     , label=label).save()    
     
     def save_yolov8(self, path_save_flag='w'):
-        img_path_info = []
-        label_path_info = []
         for img_label in self.img_labels:
             label = []
             
@@ -96,17 +94,7 @@ class MyLabel(XML):
                     ]
                 )
             
-            img_path_info.append('./'+(Path('.')/img_label.data_path.parent.name/img_label.data_path.name).as_posix())
-            label_path_info.append('./'+(Path('.')/img_label.label_path.parent.name/img_label.label_path.name).as_posix().replace('images', 'labels').replace('.json', '.txt'))
-            
             CarYolov8Label(label_path=Path(img_label.label_path.as_posix().replace('images', 'labels').replace('.json', '.txt'))
                     , data_path=img_label.data_path
                     , label=label).save() 
         
-        with (self.data_path.parent/"path_info.txt").open(path_save_flag) as f:
-            f.write('\n'.join(img_path_info))
-            # print("Images path_info.txt saved.")  
-        
-        with open(str(self.data_path.parent/"path_info.txt").replace('images', 'labels'), path_save_flag) as f:
-            f.write('\n'.join(label_path_info))
-            # print("Labels path_info.txt saved.")  
