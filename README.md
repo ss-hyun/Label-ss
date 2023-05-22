@@ -2,10 +2,11 @@
 한국 공공 데이터 셋(AI-hub 등)에는 라벨의 Meta Data 및 라벨 정보들이 제대로 기재되어 있지 않다.  
 때문에 AI 모델 학습 용도 및 라벨링 툴(lebelme 등) 사용 용도로 데이터를 변환할 때 다양한 오류(*, 듣도 보도 못한)를 마주한다.  
 이런 문제를 보다 쉽게 해결하기 위해 간단한 백본 코드를 만들었다.  
+이미지에서의 객체 탐지 라벨을 위해 만들었다.   
 Meta Data and label information of labels are not properly described in Korean public data sets (AI-hub, etc.).  
 Therefore, we face various errors when converting data to AI model learning applications and labeling tools (such as lebelme).  
 So, I create a simple backbone code to solve these problems more easily.  
-
+Created for object detection labels in images.
 
 문제점과 개선사항이 보인다면 의견 전달 부탁드립니다.  
 If you see any problems and improvements, please let me know your opinion.
