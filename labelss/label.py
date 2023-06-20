@@ -1,6 +1,6 @@
 import json
 import xmltodict
-import warnings
+import traceback
 import re
 from pathlib import Path
 from .utils import verify_path
@@ -24,6 +24,11 @@ class Label():
     def __init__(self, label_path, data_path, meta=False, label=None):
         verify_path(label_path.parent)
         verify_path(data_path.parent if data_path.is_file() else data_path)
+                
+        # Image path check
+        if not data_path.exists():
+            raise LabelError(f"Image directory '{data_path}' not exists.")
+        
         self.label_path = label_path
         self.data_path = data_path
         self.meta = meta
@@ -81,7 +86,7 @@ class Label():
                     label_path=Path(re.sub('(.jpg)|(.png)', '.json', str(label_path/name))),
                     data_path=(label_path/name),
                     label=label
-                )   
+                )
             )
         
         return result
@@ -104,6 +109,10 @@ class Label():
         
         raise LabelError(f"Invalid label data. {raw_data}")
 
+    def warn(self, msg):
+        call = traceback.extract_stack()[-2]
+        print(f'\n{self.label_path}\n\tFile "{call.filename}", line {call.lineno}\n\t{msg}')
+
 
 class LabelError(Exception):
     pass
@@ -120,10 +129,9 @@ class XML(Label):
             return xmltodict.parse(f.read())        
 
     def verify(self):
-        warnings.warn("There is no label reliability verification system.")
+        self.warn("There is no label reliability verification system.")
     
     def save(self):
-        self.verify()
         with open(str(self.label_path).replace('.xml', '.json'), 'w') as f:
             json.dump(self.label, f, indent='\t')
   
@@ -135,7 +143,7 @@ class JSON(Label):
             return json.load(f)
 
     def verify(self):
-        warnings.warn("There is no label reliability verification system.")
+        self.warn("There is no label reliability verification system.")
     
     def save(self):
         self.verify()
