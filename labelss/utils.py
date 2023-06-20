@@ -1,10 +1,13 @@
-from pathlib import Path
-
 def xyxy2xywh(x1, y1, x2, y2):
     w = x2 - x1
     h = y2 - y1
     x = x1 + (w / 2)
     y = y1 + (h / 2)
+    return x, y, w, h
+
+def ltwh2ctwh(l, t, w, h):
+    x = l + (w / 2)
+    y = t + (h / 2)
     return x, y, w, h
 
 
